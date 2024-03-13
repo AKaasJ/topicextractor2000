@@ -1,5 +1,5 @@
 .env
 .infrastructure/.terraform*
 .infrastructure/tfplan
-.infrastructure/terraform.tfstate
+.infrastructure/terraform*
 __pycache__

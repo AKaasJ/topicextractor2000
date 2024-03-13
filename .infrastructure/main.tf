@@ -16,10 +16,6 @@ resource "azurerm_resource_group" "topicextractor" {
   location = "West Europe"
 }
 
-data "azurerm_resource_group" "quote_posters" {
-  name     = "rg-quoteposters"
-}
-
 resource "azurerm_service_plan" "topicextractor" {
   name                = "asp-topicextractor"
   location            = azurerm_resource_group.topicextractor.location
@@ -28,9 +24,12 @@ resource "azurerm_service_plan" "topicextractor" {
   os_type             = "Linux"
 }
 
-data "azurerm_container_registry" "acr" {
-  name                = "acrquoteposters"
-  resource_group_name = data.azurerm_resource_group.quote_posters.name
+resource "azurerm_container_registry" "acr" {
+  name                = "acrtopicextractor"
+  resource_group_name = azurerm_resource_group.topicextractor.name
+  location            = azurerm_resource_group.topicextractor.location
+  sku                 = "Basic"
+  admin_enabled       = true
 }
 
 resource "azurerm_linux_web_app" "topicextractor" {
@@ -40,14 +39,14 @@ resource "azurerm_linux_web_app" "topicextractor" {
   service_plan_id     = azurerm_service_plan.topicextractor.id
 
   app_settings = {
-    DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.acr.admin_password
-    DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.acr.admin_username
-    DOCKER_REGISTRY_SERVER_URL = data.azurerm_container_registry.acr.login_server
+    DOCKER_REGISTRY_SERVER_PASSWORD = azurerm_container_registry.acr.admin_password
+    DOCKER_REGISTRY_SERVER_USERNAME = azurerm_container_registry.acr.admin_username
+    DOCKER_REGISTRY_SERVER_URL = azurerm_container_registry.acr.login_server
   }
 
   site_config {
     application_stack {
-      docker_image = "${data.azurerm_container_registry.acr.login_server}/${var.docker_image}"
+      docker_image = "${azurerm_container_registry.acr.login_server}/${var.docker_image}"
       docker_image_tag = var.docker_image_tag
     }
   }
