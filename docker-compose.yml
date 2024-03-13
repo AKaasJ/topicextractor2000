@@ -1,0 +1,15 @@
+version: '3.4'
+services:
+  webapp:
+    build: 
+      context: ./topic_extractor_2000
+      dockerfile: Dockerfile
+    image: topic_extractor_2000
+    volumes:
+      - ./topic_extractor_2000:/app
+    working_dir: /app
+    env_file:
+      - .env
+    ports:
+      - 80:80
+    command: streamlit run app.py --server.port 80 --server.address 0.0.0.0 --server.runOnSave 1

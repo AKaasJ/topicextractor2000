@@ -1,0 +1,34 @@
+name: Deploy to Azure WebApp
+
+on:
+  push:
+    #branches:
+    #  - main
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    if: >
+      contains(github.event.head_commit.message, 'deploy') ||
+      github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Log in to the Azure CLI
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Build and push image to Azure Container Registry
+      run: |
+        az acr build --registry acrquoteposters --file topic_extractor_2000/Dockerfile --image topicextractorwebserver:dev ./topic_extractor_2000
+
+    # consider using ${{ github.sha }} as tag ? so its easy to version the file
+    # consider cleaning up after installing packages in dockerfile
+
+    - name: Restart Azure WebApp
+      run: |
+        az webapp restart --name wa-topicextractor --resource-group rg-topicextractor
+
+    - name: Logout of Azure CLI
+      run: az logout
