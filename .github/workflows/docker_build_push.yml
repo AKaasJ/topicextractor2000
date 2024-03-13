@@ -21,7 +21,7 @@ jobs:
 
     - name: Build and push image to Azure Container Registry
       run: |
-        az acr build --registry acrquoteposters --file topic_extractor_2000/Dockerfile --image topicextractorwebserver:dev ./topic_extractor_2000
+        az acr build --registry acrtopicextractor --file topic_extractor_2000/Dockerfile --image topicextractorwebserver:dev ./topic_extractor_2000
 
     # consider using ${{ github.sha }} as tag ? so its easy to version the file
     # consider cleaning up after installing packages in dockerfile
