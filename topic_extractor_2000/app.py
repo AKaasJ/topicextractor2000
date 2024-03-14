@@ -4,6 +4,7 @@ import streamlit as st
 import pandas as pd
 from extract import extract_topics
 import json
+import matplotlib.pyplot as plt
 #newsgroups_train = fetch_20newsgroups(data_home=".")
 
 default_schema = """{
@@ -61,5 +62,17 @@ if st.sidebar.button('Extract topics'):
     st.write(df)
     # Display the counts of the topics
     st.header('Topic counts')
-    counts = df[properties].count()
-    st.bar_chart(counts)
+    #counts = df[properties].count()
+    counts = {column: df[column].value_counts() for column in properties}
+    counts_df = pd.DataFrame(counts).fillna(0).astype(int).T
+    #st.bar_chart(counts)
+
+    # Plotting with Matplotlib
+    fig, ax = plt.subplots()
+    counts_df.plot(kind='bar', ax=ax)
+    # Customize the plot if necessary (e.g., add labels, title)
+    ax.set_xlabel('Categories')
+    ax.set_ylabel('Counts')
+    ax.set_title('Counts of "ja" and "nej"')
+    # Show the plot in Streamlit
+    st.pyplot(fig)
