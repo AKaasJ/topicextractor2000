@@ -18,3 +18,11 @@ def extract_topics(documents: list, topic_schema: str):
         st.sidebar.write(f'document {i} out of {len(documents)} processed')
     topics_df = pd.DataFrame(results)
     return topics_df
+
+def create_schema(user_inputs: list) -> dict:
+    """
+    Create a topic schema from user inputs.
+    """
+    properties = {input: {"type": "string", "description": f"Nævner teksten {input}?", "enum": ["ja", "nej"]} for input in user_inputs}
+    schema = {"properties": properties}
+    return schema
