@@ -15,8 +15,9 @@ def extract_topics(documents: list, topic_schema: str):
     for i, doc in enumerate(documents):
         results.append(chain.run(doc))
         results[-1] = {k.replace('?',''): v for k, v in results[-1].items()}
-        st.sidebar.write(f'document {i} out of {len(documents)} processed')
+        st.sidebar.write(f'document {i+1} out of {len(documents)} processed')
     topics_df = pd.DataFrame(results)
+    topics_df.index = topics_df.index + 1
     return topics_df
 
 def create_schema(user_inputs: list) -> dict:
