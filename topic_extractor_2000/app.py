@@ -37,14 +37,14 @@ with col2:
     st.button("Reset topics", on_click=reset_topics)
 
 sample_topics = {
-    1: "hunde og dyreforsikringer",
-    2: "bådforsikringer",
-    3: "bilforsikringer",
-    4: "rejseforsikringer",
-    5: "indboforsikringer",
-    6: "ulykkesforsikringer",
-    7: "utilfredshed",
-    8: "priser",
+    1: "Hunde- og dyreforsikringer",
+    2: "Bådforsikringer",
+    3: "Bilforsikringer",
+    4: "Rejseforsikringer",
+    5: "Indboforsikringer",
+    6: "Ulykkesforsikringer",
+    7: "Utilfredshed",
+    8: "Priser",
 }
 
 # Display text boxes and store inputs in a list

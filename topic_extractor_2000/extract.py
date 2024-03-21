@@ -24,6 +24,6 @@ def create_schema(user_inputs: list) -> dict:
     """
     Create a topic schema from user inputs.
     """
-    properties = {input: {"type": "string", "description": f"Nævner teksten {input}?", "enum": ["ja", "nej"]} for input in user_inputs}
+    properties = {input: {"type": "string", "description": f"Nævner teksten {input}?", "enum": ["JA", "NEJ"]} for input in user_inputs}
     schema = {"properties": properties}
     return schema
